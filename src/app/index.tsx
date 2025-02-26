@@ -16,7 +16,6 @@ export default function Index() {
       <Input onChangeText={setEmail} placeholder="Email" />
       <Input onChangeText={setPassword} placeholder="Senha" />
       <Button title={"entrar"} onPress={handleSignIn} />
-      <Button title={"details"} onPress={() => router.navigate("./leaderboard")} />
     </View>
   )
 }

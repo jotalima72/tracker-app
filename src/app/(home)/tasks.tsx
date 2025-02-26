@@ -22,6 +22,7 @@ export default function Tasks() {
               title={task.title}
               description={task.description}
               status={task.executions[0]?.completed}
+              hasIcon={true}
             />
           )
         }
@@ -33,7 +34,7 @@ export default function Tasks() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#AFBED1'
+    backgroundColor: '#fff',
   },
   text: {
     fontSize: 20,
