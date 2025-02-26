@@ -15,7 +15,7 @@ export default function Card({ title, description, status, hasIcon, onPress }: C
     <TouchableOpacity onPress={onPress} activeOpacity={0.7} style={styles.container}>
       <View style={styles.textContainer}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.description}>{description} 12341234 123 1234 1234124</Text>
+        <Text style={styles.description}>{description}</Text>
       </View>
       {hasIcon ?
         <Icon

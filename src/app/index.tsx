@@ -8,13 +8,22 @@ export default function Index() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const handleSignIn = () => {
-    router.navigate("./tasks");
+    router.push("/tasks");
   }
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Login</Text>
-      <Input onChangeText={setEmail} placeholder="Email" />
-      <Input onChangeText={setPassword} placeholder="Senha" />
+      <Input
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+      />
+      <Input
+        placeholder="Senha"
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
       <Button title={"entrar"} onPress={handleSignIn} />
     </View>
   )

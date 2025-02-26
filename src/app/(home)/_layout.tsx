@@ -1,10 +1,16 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 
 export default function HomeLayout() {
   return (
     <Tabs
       screenOptions={{
+        tabBarActiveTintColor: '#045676',
+        tabBarStyle: {
+          backgroundColor: '#EDF6FC',
+          borderTopWidth: 0,
+          height: 60,
+        },
         headerShown: false,
         animation: 'shift',
       }}>
@@ -13,7 +19,7 @@ export default function HomeLayout() {
         tabBarIcon: ({ color }) => <FontAwesome size={28} name="tasks" color={color} />,
       }} />
       <Tabs.Screen name="leaderboard" options={{
-        title: 'placar',
+        title: 'Ranking',
         tabBarIcon: ({ color }) => <FontAwesome size={28} name="trophy" color={color} />,
       }} />
     </Tabs>
