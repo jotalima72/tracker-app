@@ -112,3 +112,7 @@ const tasks: Task[] = [
 export async function getTasks() {
   return await tasks;
 }
+
+export async function getTask(id: string) {
+  return await tasks.find(task => task.id === id);
+}

@@ -1,13 +1,13 @@
-import { StyleSheet, Text, TouchableOpacity, TouchableOpacityProps } from "react-native";
+import { StyleSheet, Text, TextStyle, TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 type ButtonProps = TouchableOpacityProps & {
   title: string,
-
+  titleStyle?: TextStyle
 }
 
-export default function ThemedButton({ title, onPress, ...rest }: ButtonProps) {
-  return <TouchableOpacity style={styles.container} onPress={onPress} {...rest} >
-    <Text style={styles.title}>{title}</Text>
+export default function ThemedButton({ title, onPress, style, titleStyle, ...rest }: ButtonProps) {
+  return <TouchableOpacity style={[styles.container, style]} onPress={onPress} {...rest} >
+    <Text style={[styles.title, titleStyle]}>{title}</Text>
   </TouchableOpacity>;
 }
 
