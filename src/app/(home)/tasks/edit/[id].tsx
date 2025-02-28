@@ -41,8 +41,8 @@ export default function EditTaskScreen() {
 
   const handleDelete = () => {
     // Aqui você enviaria os dados atualizados para a API
-    Alert.alert("Task Atualizada", "Os dados foram salvos com sucesso.");
-    router.back();
+    Alert.alert("Task apagada", "Os dados foram apagados.");
+    router.dismissTo("/(home)/tasks")
   };
 
   const handleCancel = () => {
