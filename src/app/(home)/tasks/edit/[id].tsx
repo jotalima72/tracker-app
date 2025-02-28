@@ -39,6 +39,12 @@ export default function EditTaskScreen() {
     router.back();
   };
 
+  const handleDelete = () => {
+    // Aqui você enviaria os dados atualizados para a API
+    Alert.alert("Task Atualizada", "Os dados foram salvos com sucesso.");
+    router.back();
+  };
+
   const handleCancel = () => {
     router.back();
   };
@@ -68,6 +74,9 @@ export default function EditTaskScreen() {
       <View style={styles.buttonContainer}>
         <ThemedButton style={styles.cancelButton} title="Cancelar" titleStyle={styles.cancelText} onPress={handleCancel} />
         <ThemedButton style={styles.confirmButton} title="Salvar" onPress={handleSave} />
+      </View>
+      <View style={styles.buttonContainer}>
+        <ThemedButton style={styles.deleteButton} title="Deletar" onPress={handleDelete} />
       </View>
     </View>
   );
@@ -112,6 +121,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
     borderWidth: 1,
     borderColor: "#F44002"
+  },
+  deleteButton: {
+    width: "45%",
+    padding: 10,
+    borderRadius: 5,
+    elevation: 3,
+    backgroundColor: "#F44002",
+    borderWidth: 1,
+    borderColor: "#FFF"
+  },
+  deleteText: {
+    color: "#F44002",
   },
   cancelText: {
     color: "#F44002",
