@@ -1,41 +1,62 @@
 import { View, Text, StyleSheet, Alert, GestureResponderEvent } from "react-native";
 import Button from "@/components/button";
 import Input from "@/components/input";
-import { useState } from "react";
 import { router } from "expo-router";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { createTask } from "@/services/tasks";
+import { STATIC_TOKEN } from "@/services/constants";
+
+const schema = z.object({
+  title: z.string().min(1, "O título é obrigatório"),
+  description: z.string().min(1, "A descrição é obrigatória"),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export default function CreateScreen() {
-  const [title, setTitle] = useState("")
-  const [description, setDescription] = useState("")
-  const handleSignIn = () => {
-    router.back();
-  }
-  function handleOverlayClick(e: GestureResponderEvent): void {
-    const target = e.target;
-    if (target === e.currentTarget) {
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
+
+  function handleOverlayClick(e: GestureResponderEvent) {
+    if (e.target === e.currentTarget) {
       router.back();
     }
   }
+
+  const onSubmit = (data: FormData) => {
+    console.log("Dados enviados:", data);
+    createTask(data, STATIC_TOKEN);
+    Alert.alert("Tarefa Criada", "A tarefa foi criada com sucesso!");
+    router.back();
+  };
 
   return (
     <View style={styles.overlay} onTouchEnd={handleOverlayClick}>
       <View style={styles.container}>
         <Input
-          placeholder="Titulo"
-          value={title}
-          onChangeText={setTitle}
-          style={styles.text}
+          placeholder="Título"
+          onChangeText={(text) => setValue("title", text)}
+          errors={errors.title}
         />
         <Input
           placeholder="Descrição"
-          value={description}
-          onChangeText={setDescription}
+          onChangeText={(text) => setValue("description", text)}
+          multiline
           style={styles.description}
+          errors={errors.description}
         />
-        <Button title={"enviar"} onPress={handleSignIn} />
+        <Button title="Enviar" onPress={handleSubmit(onSubmit)} />
       </View>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -47,20 +68,14 @@ const styles = StyleSheet.create({
   container: {
     padding: 32,
     gap: 16,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     height: "50%",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     alignItems: "center",
   },
-  text: {
-    fontSize: 20,
-    color: '#000',
-  },
   description: {
     height: 100,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-    textAlignVertical: 'top'
+    textAlignVertical: "top",
   }
 });
