@@ -26,18 +26,15 @@ export default function Index() {
   });
   const { login } = useAuth();
   const onSubmit = async (data: LoginFormData) => {
-
-    const response = await fetch(BACKEND_URL + "auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).catch((err) => {
-      Alert.alert("Erro", err.message || "Erro ao fazer login.");
-    });
-
-    if (response) {
+    console.log(BACKEND_URL + "auth/login")
+    try {
+      const response = await fetch(BACKEND_URL + "auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
       if (!response.ok) {
         const errorData = await response.json();
         Alert.alert("Erro", errorData.message || "Erro ao fazer login.");
@@ -47,6 +44,9 @@ export default function Index() {
       await login(access_token);
       router.replace("/tasks");
     }
+    catch (err: any) {
+      Alert.alert("Erro", err.message || "Erro ao fazer login.");
+    };
   };
 
   return (

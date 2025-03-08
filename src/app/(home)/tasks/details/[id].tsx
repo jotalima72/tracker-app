@@ -1,8 +1,9 @@
 import ThemedButton from '@/components/button';
 import { STATIC_TOKEN } from '@/services/constants';
 import { getTask, Task } from '@/services/tasks';
-import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import { getWeekString } from '@/services/week';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, View, Text, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 
 export default function DetailScreen() {
@@ -10,24 +11,25 @@ export default function DetailScreen() {
   const { id } = useLocalSearchParams();
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const task = await getTask(id as string, STATIC_TOKEN);
-        if (task) {
-          setTaskData(task);
-        } else {
-          Alert.alert("Erro", "Tarefa não encontrada.");
+  useFocusEffect(
+    useCallback(() => {
+      const fetchData = async () => {
+        try {
+          const task = await getTask(id as string, STATIC_TOKEN);
+          if (task) {
+            setTaskData(task);
+          } else {
+            Alert.alert("Erro", "Tarefa não encontrada.");
+          }
+        } catch (error) {
+          console.error("Erro ao buscar a tarefa:", error);
+          Alert.alert("Erro", "Não foi possível carregar a tarefa.");
+        } finally {
+          setLoading(false);
         }
-      } catch (error) {
-        console.error("Erro ao buscar a tarefa:", error);
-        Alert.alert("Erro", "Não foi possível carregar a tarefa.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [id]);
+      };
+      fetchData();
+    }, [id]));
 
   const handleEdit = () => {
     router.push({ pathname: `/tasks/edit/[id]`, params: { id: id as string } })
@@ -53,7 +55,7 @@ export default function DetailScreen() {
       <View style={styles.executionContainer}>
         {taskData?.executions.map((execution, index) => (
           <View key={index} style={styles.executionCard}>
-            <Text style={styles.executionWeek}>Semana: {execution.week}</Text>
+            <Text style={styles.executionWeek}>Semana: {getWeekString(new Date(execution.week + 'T00:00:00.000-03:00'))}</Text>
             <Text style={styles.executionStatus}>
               Status: {execution.completed ? 'Concluída ✅' : 'Pendente ❌'}
             </Text>
@@ -98,9 +100,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 8,
     marginBottom: 10,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
     elevation: 2,
   },
   executionWeek: {

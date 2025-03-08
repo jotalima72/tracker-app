@@ -32,7 +32,6 @@ export default function CreateScreen() {
   }
 
   const onSubmit = (data: FormData) => {
-    console.log("Dados enviados:", data);
     createTask(data, STATIC_TOKEN);
     Alert.alert("Tarefa Criada", "A tarefa foi criada com sucesso!");
     router.back();

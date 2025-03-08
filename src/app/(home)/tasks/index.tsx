@@ -2,9 +2,11 @@ import Card from "@/components/card";
 import IconButton from "@/components/iconButton";
 import { STATIC_TOKEN } from "@/services/constants";
 import { getTasks, Task } from "@/services/tasks";
+import { getWeek } from "@/services/week";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
+import { set } from "react-hook-form";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function Tasks() {
@@ -19,15 +21,16 @@ export default function Tasks() {
       //   console.error("Token não encontrado!");
       //   return;
       // }
-      const tasks = await getTasks(STATIC_TOKEN); 
+      const tasks = await getTasks(STATIC_TOKEN);
       setTasks(tasks);
+
     } catch (error) {
       console.error("Erro ao buscar tarefas:", error);
     } finally {
       setLoading(false);
     }
   }
-  
+
   useFocusEffect(
     useCallback(() => {
       fetchTasks();
@@ -45,15 +48,19 @@ export default function Tasks() {
           loading ?
             <Text style={styles.text}>Carregando...</Text>
             :
-            (tasks.map((task) =>
-              <Card key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.executions[0]?.completed}
-                hasIcon={true}
-                onPress={() => router.push({ pathname: `/tasks/details/[id]`, params: { id: task.id } })}
-              />
-            ))
+            (<>
+
+              {tasks.map((task) =>
+                <Card key={task.id}
+                  title={task.title}
+                  description={task.description}
+                  status={task.executions[0]?.completed}
+                  hasIcon={true}
+                  onPress={() => router.push({ pathname: `/tasks/details/[id]`, params: { id: task.id } })}
+                />
+              )}
+
+            </>)
 
         }
       </ScrollView>
