@@ -1,4 +1,5 @@
 import ThemedButton from '@/components/button';
+import { STATIC_TOKEN } from '@/services/constants';
 import { getTask, Task } from '@/services/tasks';
 import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +13,7 @@ export default function DetailScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const task = await getTask(id as string);
+        const task = await getTask(id as string, STATIC_TOKEN);
         if (task) {
           setTaskData(task);
         } else {

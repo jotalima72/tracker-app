@@ -1,6 +1,8 @@
 import Card from "@/components/card";
 import IconButton from "@/components/iconButton";
+import { STATIC_TOKEN } from "@/services/constants";
 import { getTasks, Task } from "@/services/tasks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
@@ -10,12 +12,14 @@ export default function Tasks() {
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     async function fetchTasks() {
-      const tasks = await getTasks()
+      const token = await AsyncStorage.getItem('jwt');
+      const tasks = await getTasks(STATIC_TOKEN)
       setTasks(tasks)
       setLoading(false)
     }
     fetchTasks()
   }, [])
+
   function handleCreateTask(): void {
     router.push("/tasks/create")
   }
